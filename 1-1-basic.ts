@@ -63,7 +63,7 @@
   // never -> 리턴하지 않음! 리턴할 생각이 없음(무조건 어플리케이션 종료)
   function throwError(message: string): never {
     // message -> server (log)
-    // throw new Error(message);
+    throw new Error(message);
     /**
      * while(true) {
      *
@@ -76,31 +76,4 @@
   function acceptSomeObject(obj: object) {}
   acceptSomeObject({ name: "guntak" });
   acceptSomeObject({ animal: "dog" });
-
-  // JS 💩
-  function jsAdd(num1, num2) {
-    return num1 + num2;
-  }
-
-  // TS
-  function add(num1: number, num2: number): number {
-    return num1 + num2;
-  }
-
-  // JS 💩
-  function jsFetchNum(id) {
-    // code  ...
-    // code  ...
-    // code  ...
-    return new Promise((resolve, reject) => {
-      resolve(100);
-    });
-  }
-
-  // TS
-  function tsFetchNum(id: string): Promise<number> {
-    return new Promise((resolve, rejct) => {
-      resolve(100);
-    });
-  }
 }
