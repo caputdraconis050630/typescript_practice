@@ -35,4 +35,19 @@
   printName("Steve", "Kim");
   printName("Steve", undefined);
   printName("Steve");
+
+  // Default Parameter
+  function printMessage(message: string = "Default Message") {
+    console.log(message);
+  }
+  printMessage();
+  printMessage("HOHOIT");
+
+  // Rest Parameter
+  function addNumbers(...nums: number[]) {
+    let total: number = 0;
+    nums.forEach((num) => (total += num));
+    console.log(total);
+  }
+  addNumbers(1, 2, 3, 4, 5, 6, 7);
 }
