@@ -51,5 +51,8 @@
   }
   addNumbers(1, 2, 3, 4, 5, 6, 7);
 
-  // Array, Tuple 🙃
+  function addNumbers2(...numbers: number[]): number {
+    return numbers.reduce((a, b) => a + b);
+  }
+  console.log(addNumbers2(1, 2, 3, 4, 5, 0));
 }
