@@ -8,7 +8,13 @@
     makeCoffee(shots: number): CoffeeCup;
   }
 
-  class CoffeeMachine implements CoffeeMaker {
+  interface CommercialCoffeeMaker {
+    makeCoffee(shots: number): CoffeeCup;
+    fillCoffeeBeans(beans: number): void;
+    clean(): void;
+  }
+
+  class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
     private static BEANS_GRAMM_PER_SHOT: number = 7; // class level
     private coffeeBeans: number = 0; // instance (object) level
 
@@ -24,7 +30,12 @@
       if (beans < 0) {
         throw new Error("value for beans should be greater than 0");
       }
+      console.log("Filling Coffee Beans...🙉");
       this.coffeeBeans += beans;
+    }
+
+    clean() {
+      console.log("Cleaning The Machine...🧼");
     }
     private grindBeans(shots: number) {
       console.log(`grinding beans for ${shots}`);
@@ -59,10 +70,34 @@
     }
   }
 
-  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
-  maker.fillCoffeeBeans(32);
-  maker.makeCoffee(5);
+  class Amateur {
+    constructor(private machine: CoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+    }
+  }
 
-  const maker2: CoffeeMaker = CoffeeMachine.makeMachine(32);
-  maker2.makeCoffee(5);
+  class ProBarista {
+    constructor(private machine: CommercialCoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+      this.machine.fillCoffeeBeans(45);
+      this.machine.clean();
+    }
+  }
+
+  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
+  /**
+   * 아마추어, 프로 모두 동일한 메이커를 인자로 받음
+   * 하지만, 각기 다른 인터페이스에 규약된 행동까지만 가능
+   * 인터페이스의 장점
+   */
+  const amateur = new Amateur(maker);
+  const pro = new ProBarista(maker);
+  console.log("############# Amateur is making a coffee #############\n");
+  amateur.makeCoffee();
+  console.log("############### Pro is making a coffee ###############\n");
+  pro.makeCoffee();
 }
