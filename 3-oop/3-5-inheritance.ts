@@ -8,17 +8,11 @@
     makeCoffee(shots: number): CoffeeCup;
   }
 
-  interface CommercialCoffeeMaker {
-    makeCoffee(shots: number): CoffeeCup;
-    fillCoffeeBeans(beans: number): void;
-    clean(): void;
-  }
+  class CoffeeMachine implements CoffeeMaker {
+    protected static BEANS_GRAMM_PER_SHOT: number = 7; // class level
+    protected coffeeBeans: number = 0; // instance (object) level
 
-  class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
-    private static BEANS_GRAMM_PER_SHOT: number = 7; // class level
-    private coffeeBeans: number = 0; // instance (object) level
-
-    private constructor(coffeeBeans: number) {
+    public constructor(coffeeBeans: number) {
       this.coffeeBeans = coffeeBeans;
     }
 
@@ -70,34 +64,27 @@
     }
   }
 
-  class Amateur {
-    constructor(private machine: CoffeeMaker) {}
-    makeCoffee() {
-      const coffee = this.machine.makeCoffee(2);
-      console.log(coffee);
+  class CafeLatteMachine extends CoffeeMachine {
+    constructor(beans: number, public readonly serialNumber: string) {
+      super(beans);
+    }
+
+    private steamMilk(): void {
+      console.log("Steaming some milk... 🥛");
+    }
+    makeCoffee(shots: number): CoffeeCup {
+      const coffee = super.makeCoffee(shots);
+      this.steamMilk();
+      return {
+        ...coffee,
+        hasMilk: true,
+      };
     }
   }
 
-  class ProBarista {
-    constructor(private machine: CommercialCoffeeMaker) {}
-    makeCoffee() {
-      const coffee = this.machine.makeCoffee(2);
-      console.log(coffee);
-      this.machine.fillCoffeeBeans(45);
-      this.machine.clean();
-    }
-  }
-
-  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
-  /**
-   * 아마추어, 프로 모두 동일한 메이커를 인자로 받음
-   * 하지만, 각기 다른 인터페이스에 규약된 행동까지만 가능
-   * 인터페이스의 장점
-   */
-  const amateur = new Amateur(maker);
-  const pro = new ProBarista(maker);
-  console.log("############# Amateur is making a coffee #############\n");
-  amateur.makeCoffee();
-  console.log("############### Pro is making a coffee ###############\n");
-  pro.makeCoffee();
+  const machine = new CoffeeMachine(23);
+  const latteMachine = new CafeLatteMachine(23, "SEEEQ1241");
+  const coffee = latteMachine.makeCoffee(1);
+  console.log(coffee);
+  console.log(latteMachine.serialNumber);
 }
