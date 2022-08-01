@@ -94,8 +94,8 @@
     new CafeLatteMachine(16, "SEWEAEW132"),
     new SweetCoffeeMaker(16),
   ];
-  // machines.forEach((machine) => {
-  //   console.log("----------------------");
-  //   machine.makeCoffee(1);
-  // });
+  machines.forEach((machine) => {
+    console.log("----------------------");
+    machine.makeCoffee(1);
+  });
 }
