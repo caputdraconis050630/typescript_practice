@@ -1,7 +1,8 @@
 {
   type CoffeeCup = {
     shots: number;
-    hasMilk: boolean;
+    hasMilk?: boolean;
+    hasSugar?: boolean;
   };
 
   interface CoffeeMaker {
@@ -64,27 +65,32 @@
     }
   }
 
-  class CafeLatteMachine extends CoffeeMachine {
-    constructor(beans: number, public readonly serialNumber: string) {
-      super(beans);
-    }
-
+  // 싸구려 우유 거품기
+  class CheapMilkSteamer {
     private steamMilk(): void {
       console.log("Steaming some milk... 🥛");
     }
-    makeCoffee(shots: number): CoffeeCup {
-      const coffee = super.makeCoffee(shots);
+    makeMilk(cup: CoffeeCup): CoffeeCup {
       this.steamMilk();
       return {
-        ...coffee,
+        ...cup,
         hasMilk: true,
       };
     }
   }
 
-  const machine = new CoffeeMachine(23);
-  const latteMachine = new CafeLatteMachine(23, "SEEEQ1241");
-  const coffee = latteMachine.makeCoffee(1);
-  console.log(coffee);
-  console.log(latteMachine.serialNumber);
+  class AutomaticSugarMixer {
+    private getSugar() {
+      console.log("Getting some sugar from candy... 🍭");
+      return true;
+    }
+
+    addSugar(cup: CoffeeCup): CoffeeCup {
+      const sugar = this.getSugar();
+      return {
+        ...cup,
+        hasSugar: sugar,
+      };
+    }
+  }
 }
